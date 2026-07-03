@@ -1,0 +1,309 @@
+/* Small supplement on top of the original rbpartner2 theme CSS.
+   Keeps behaviour that the original achieved via WordPress/JS, adapted to React. */
+
+#root { min-height: 100%; }
+
+/* Sticky footer: on short pages (GLOBALSCOPE, Contacts) the footer must sit at
+   the bottom of the viewport instead of right under the content. */
+.page-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+.page-wrapper > .page { flex: 1 0 auto; }
+.page-wrapper > footer { flex: 0 0 auto; }
+
+/* The hamburger (.dl-menuwrapper) is only used on mobile; hide it on desktop
+   where the horizontal menu is shown (mobile rules re-enable it below). */
+@media (min-width: 769px) {
+  .dl-menuwrapper { display: none !important; }
+}
+
+/* language switch rendered as a button instead of an <a><img>) */
+.lang-go button {
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+}
+.lang-go button img { display: block; }
+
+/* clickable team card opens its description (original used :target / JS) */
+.go-team-desc { cursor: pointer; }
+.item-team .team-desc { cursor: default; }
+
+/* original used 150px WP thumbnails (with width attr); we serve full-size
+   images, so constrain them to the card to avoid oversized photos */
+.go-team-desc img {
+  width: 150px;
+  height: 200px;
+  object-fit: cover;
+  object-position: top center;
+}
+
+/* The theme laid out team cards with floats + margin resets tied to
+   :nth-child(5n+1), assuming exactly 5 cards per row after the <h2>.
+   We render every member (no show-more wrapper), which breaks that grid.
+   Use a robust flex-wrap grid instead; the absolutely-positioned bio
+   popup (.team-desc.active) still anchors to its relative .item-team. */
+.partners-block,
+.exspert-block {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 28px 90px;
+}
+.partners-block > h2,
+.exspert-block > h2 {
+  flex: 0 0 100%;
+  margin: 0 0 6px;
+}
+.partners-block .item-team,
+.exspert-block .item-team {
+  float: none;
+  margin: 0;
+  width: 150px;
+}
+
+/* deals tabs interactivity */
+.sdelka-list li { cursor: pointer; }
+
+/* generic safety: images inside rich content shouldn't overflow */
+.content img, .deal-txt img, .team-desc img { max-width: 100%; height: auto; }
+
+/* keep router links looking like the theme's anchors */
+a { cursor: pointer; }
+
+/* body sets line-height in em (a fixed ~18px) which all elements inherit, so
+   large titles overlap their own lines. Give big titles a proper line-height. */
+.block-ttl { line-height: 1.2; }
+
+/* Remove the gray section bands behind the team groups (per request) */
+.partners-block-wrp,
+.exspert-block-wrp {
+  background-color: transparent;
+}
+
+/* =====================================================================
+   Responsive / mobile adaptation
+   The original theme was a fixed 1200px desktop layout (mobile used a
+   separate server-rendered template). These rules make the single React
+   layout fluid and usable down to phone widths.
+   ===================================================================== */
+
+/* Fluid container instead of the hard 1200px width */
+@media (max-width: 1240px) {
+  header,
+  .wrapper,
+  footer .wrapper {
+    width: 100% !important;
+    max-width: 1200px;
+    box-sizing: border-box;
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+  .content { max-width: 100%; box-sizing: border-box; }
+  .home-slide,
+  .about-slide,
+  .global-scope-slide,
+  .uslugi-slide {
+    min-width: 0 !important;
+    background-size: cover;
+  }
+  img { max-width: 100%; }
+}
+
+/* Tablet: tighten the home two-column hero */
+@media (max-width: 1000px) and (min-width: 769px) {
+  .left-slide-1 { width: 58%; }
+  .right-slide-1 { width: 38%; margin-left: 0; }
+}
+
+/* ---------------- Phones / small tablets ---------------- */
+@media (max-width: 768px) {
+  header {
+    height: auto;
+    padding: 14px 15px;
+    position: relative;
+  }
+  .logo { float: left; margin-top: 0; }
+
+  /* hamburger toggle (top-right) */
+  .dl-menuwrapper {
+    display: inline-block !important;
+    position: absolute;
+    right: 15px;
+    top: 16px;
+    margin: 0;
+    min-width: 48px;
+  }
+
+  /* social + language under the logo row */
+  .rght-block { float: none; display: block; width: 100%; clear: both; }
+  .top-menu-block { text-align: left; margin-top: 14px; }
+  .lang-go { float: none; }
+
+  /* collapsible navigation */
+  .menu { width: 100%; }
+  #menu { width: 100%; }
+  #menu ul { display: none; width: 100%; }
+  .menu-open #menu ul { display: block; }
+  #menu ul li { float: none; display: block; margin: 0; }
+  #menu ul li a {
+    display: block;
+    padding: 12px 4px;
+    border-bottom: 1px solid #e4e4e4;
+  }
+
+  /* hero / awards */
+  .slide-ttl { font-size: 20px; padding-top: 26px; }
+  .home-slide { height: auto; padding-bottom: 30px; }
+  .awrd-wrp { flex-wrap: wrap; }
+  .slide-awrd { margin: 12px; width: 240px; }
+
+  /* section headings + "more" links flow inline on mobile */
+  .home-slide-ttl { font-size: 20px !important; }
+  a.go-detail {
+    position: static !important;
+    display: inline-block;
+    margin-top: 16px;
+    right: auto !important;
+    bottom: auto !important;
+  }
+  .home-slide-2 { padding-bottom: 30px; }
+
+  /* home hero two-column -> stacked */
+  .left-slide-1,
+  .right-slide-1 {
+    float: none;
+    width: 100%;
+    height: auto;
+    margin: 0 0 18px 0;
+    padding-left: 0;
+  }
+  .right-slide-1 { height: 180px; }
+
+  /* deals page containers are hard-coded to 1200px in the theme -> make fluid */
+  .objects_block_wrp_list,
+  .objects_block_wrp,
+  .objects_block {
+    width: 100% !important;
+    max-width: 100%;
+    box-sizing: border-box;
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+  .objects_block .tab-ttl { font-size: 20px; }
+
+  /* featured deals + deals page grids: centered flexible cards */
+  ul.deals-list,
+  ul.objects_list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 16px;
+  }
+  ul.deals-list li,
+  ul.objects_list li {
+    margin: 0 !important;
+    width: 46%;
+    max-width: 220px;
+    height: auto;
+  }
+  /* deal logos are hard-coded to 220px in the theme — fit them to the card */
+  .deal-img,
+  .deal-img-wrp {
+    width: 100% !important;
+  }
+  .deal-img img {
+    max-width: 100% !important;
+    height: auto;
+  }
+  /* the theme clips deal text at a fixed height — let it grow & wrap on mobile */
+  .deal-img { height: 100px !important; }
+  .deal-desc { height: auto !important; }
+  .deal-txt {
+    height: auto !important;
+    overflow: visible !important;
+    overflow-wrap: break-word;
+    word-break: break-word;
+  }
+
+  /* team grid: centered, 2-up */
+  .partners-block,
+  .exspert-block {
+    gap: 22px 16px;
+    justify-content: center;
+    padding: 0 10px;
+  }
+  /* an opened card spans the full row so the bio isn't squeezed into 150px */
+  .item-team.item-open { width: 100% !important; }
+  /* keep the bio popup on-screen (it normally pops out to the side) */
+  .team-desc.active {
+    position: static !important;
+    width: 100% !important;
+    left: auto !important;
+    right: auto !important;
+    min-height: 0 !important;
+    margin-top: 8px;
+  }
+  .item-team { margin-bottom: 10px; }
+  /* let multi-line names fit instead of being clipped by the fixed height */
+  .team-ttl {
+    height: auto !important;
+    padding: 10px 10px 14px 10px !important;
+    font-size: 15px;
+  }
+
+  /* footer stacks */
+  footer { height: auto; padding-bottom: 24px; }
+  footer .wrapper { padding-top: 24px; }
+  .left-menu,
+  .right-info { float: none; display: block; width: 100%; }
+  .left-menu ul { margin-right: 30px; }
+  .right-info { margin-top: 20px; font-size: 15px; }
+
+  /* generic content/services */
+  .usluga-list .usluga-item a { font-size: 15px; }
+  h1 { font-size: 22px; }
+  .block-ttl { font-size: 21px; line-height: 1.3; padding-left: 0; }
+  .strateg-block .wrapper { padding: 32px 0 36px 0; }
+
+  /* give text more horizontal room (it was double-padded: wrapper + content) */
+  .wrapper { padding-left: 12px; padding-right: 12px; }
+  .content { padding-left: 0; padding-right: 0; }
+
+  /* content images span the screen instead of staying small / floated */
+  .content img,
+  .rich img,
+  .deal-txt img { max-width: 100%; height: auto; }
+  img.right-img,
+  img.left-img {
+    float: none !important;
+    display: block;
+    margin: 12px auto;
+    padding: 0 !important;
+    max-width: 100%;
+  }
+  .lft-block,
+  .rght-block,
+  .content .rght-block {
+    float: none !important;
+    width: 100% !important;
+    display: block;
+  }
+  /* "Отрасли": white text on a 267px dark bg overlay. When the block grows on
+     mobile, the bg must follow or the white text lands on white = invisible. */
+  .otrasli-block {
+    height: auto !important;
+    padding-bottom: 20px;
+    position: relative;
+    background-color: #15233a;
+  }
+  .otrasli-block:before { height: 100% !important; top: 0; }
+
+  /* awards stretch a bit wider */
+  .slide-awrd { width: 86%; max-width: 300px; }
+}
