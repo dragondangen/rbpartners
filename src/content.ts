@@ -23,6 +23,7 @@ export function normalizeAssets(html: string): string {
   return html
     .replace(/https?:\/\/(www\.)?rbpartners\.ru/gi, "")
     .replace(/https?:\/\/rb\.96\.lt/gi, "")
+    .replace(/https?:\/\/rbwp\.loc/gi, "")
     .replace(/https?:\/\/[a-z0-9.-]*frontspher[a-z0-9.-]*/gi, "");
 }
 

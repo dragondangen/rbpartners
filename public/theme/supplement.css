@@ -77,8 +77,79 @@
 a { cursor: pointer; }
 
 /* body sets line-height in em (a fixed ~18px) which all elements inherit, so
-   large titles overlap their own lines. Give big titles a proper line-height. */
+   large titles overlap their own lines (worse in Russian, where text wraps to
+   more lines). Give big titles a proper line-height. */
 .block-ttl { line-height: 1.2; }
+.home-slide-ttl { line-height: 1.25; }
+.content h1, .content h2, .content h3,
+.rich h1, .rich h2, .rich h3 { line-height: 1.3; }
+
+/* Banner title: a bit smaller so it fits nicely (esp. the longer Russian text). */
+.slide-ttl { font-size: 26px; padding-top: 40px; }
+
+/* Home "Globalscope" block: the theme fixes .left-slide-1 at 210px, but the
+   Russian text is taller, so it overflowed and the absolutely-positioned
+   "Всё о Нас" link landed in the middle of the paragraph. Let it grow and let
+   the link flow after the text. */
+.home-slide-1 .left-slide-1 {
+  height: auto;
+  min-height: 210px;
+  padding-bottom: 16px;
+}
+.home-slide-1 a.go-detail {
+  position: static;
+  display: inline-block;
+  margin-top: 12px;
+}
+
+/* Award boxes: equalize their height. The Russian middle box wraps to more
+   lines and exceeds the theme's 162px min-height, so the row looked ragged.
+   Raise the min-height above the longest text and vertically centre the
+   content, so all three boxes are the same height regardless of language. */
+.awrd-wrp {
+  display: flex !important;
+  justify-content: center;
+  align-items: flex-start !important;
+  flex-wrap: wrap;
+}
+.awrd-desct { line-height: 1.35; }
+/* Desktop: equal fixed height + smaller top gap so the row sits higher.
+   (Scoped to desktop so it doesn't clash with the mobile award rules.) */
+@media (min-width: 769px) {
+  .awrd-wrp .slide-awrd {
+    height: 215px !important;
+    min-height: 0 !important;
+    align-self: flex-start !important;
+    display: block;
+    vertical-align: top;
+    margin: 12px 50px !important;
+  }
+}
+
+/* Deal logos must fit the card width without cropping. Some logos are very wide
+   (e.g. 1200x233) and the theme fixes the wrapper at 220px, so on narrower cards
+   they overflowed and got clipped. Scale to fit the card, keep aspect ratio. */
+.deal-img {
+  overflow: hidden;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  padding: 0 14px;
+  box-sizing: border-box;
+}
+.deal-img-wrp {
+  width: auto !important;
+  max-width: 100%;
+  min-width: 0 !important;   /* allow the flex item to shrink below the logo's natural width */
+  height: auto !important;
+  padding: 0 !important;
+  display: block;
+  box-sizing: border-box;
+}
+.deal-img img {
+  max-width: 100% !important;
+  height: auto;
+}
 
 /* Remove the gray section bands behind the team groups (per request) */
 .partners-block-wrp,
