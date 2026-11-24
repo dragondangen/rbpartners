@@ -10,5 +10,13 @@ export default defineConfig({
   build: {
     outDir: "dist",
     sourcemap: false,
+    rollupOptions: {
+      input: [
+        "index.html",
+        "designs/editorial/index.html",
+        "designs/meridian/index.html",
+        "designs/partnership/index.html",
+      ],
+    },
   },
 });
